@@ -1,22 +1,20 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const {
-  ApolloServer
-} = require('apollo-server-express');
-const {
-  importSchema
-} = require('graphql-import');
+const { ApolloServer } = require('apollo-server-express');
+const { importSchema } = require('graphql-import');
 const resolvers = require('./graphql/resolvers');
 
 // models
 const User = require('./models/User');
+const Snap = require('./models/Snap');
 
 const server = new ApolloServer({
-  typeDefs: importSchema('./graphql/types/schema.graphql'),
+  typeDefs: importSchema('./graphql/schema.graphql'),
   resolvers,
   context: {
-    User
+    User,
+    Snap
   }
 });
 
@@ -33,8 +31,11 @@ const app = express();
 server.applyMiddleware({
   app
 });
-app.listen({
-  port: 4001
-}, () => {
-  console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
-});
+app.listen(
+  {
+    port: 4001
+  },
+  () => {
+    console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
+  }
+);

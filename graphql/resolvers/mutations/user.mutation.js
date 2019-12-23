@@ -1,5 +1,12 @@
 module.exports = {
-  createUser: async (parent, { data: { userName, password } }, { User }) => {
+  createUser: async (parent, {
+    data: {
+      userName,
+      password
+    }
+  }, {
+    User
+  }) => {
     const user = await User.findOne({
       userName
     });
@@ -8,6 +15,9 @@ module.exports = {
       throw new Error('User already exist');
     }
 
-    return await new User({ userName, password }).save();
+    return await new User({
+      userName,
+      password
+    }).save();
   }
 };

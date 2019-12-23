@@ -1,8 +1,2 @@
-type Query {
-  user: User!
-}
-
-type User {
-  name: String!
-  surname: String!
-}
+# import Query from './user.graphql'
+# import Mutation from './user.graphql'

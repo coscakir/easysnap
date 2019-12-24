@@ -12,9 +12,15 @@ type User {
 
 type Mutation {
   createUser(data: CreateUserInput!): User
+  signIn(data: SigninUserInput!): Token
 }
 
 input CreateUserInput {
+  userName: String!
+  password: String!
+}
+
+input SigninUserInput {
   userName: String!
   password: String!
 }

@@ -11,10 +11,12 @@ module.exports = {
       throw new Error('User already exist');
     }
 
-    return await new User({
+    const newUser = await new User({
       userName,
       password
     }).save();
+
+    return { token: token.generate(newUser, '1h') };
   },
 
   signIn: async (parent, { data: { userName, password } }, { User }) => {
@@ -23,9 +25,9 @@ module.exports = {
       throw new Error('User does not exist');
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
+    const isValid = await bcrypt.compare(password, user.password);
 
-    if (!validPassword) {
+    if (!isValid) {
       throw new Error('Wrong password');
     }
 

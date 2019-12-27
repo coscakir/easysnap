@@ -1,16 +1,16 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const { ApolloServer } = require('apollo-server-express');
-const { importSchema } = require('graphql-import');
-const resolvers = require('./graphql/resolvers');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const { ApolloServer } = require("apollo-server-express");
+const { importSchema } = require("graphql-import");
+const resolvers = require("./graphql/resolvers");
 
 // models
-const User = require('./models/User');
-const Snap = require('./models/Snap');
+const User = require("./models/User");
+const Snap = require("./models/Snap");
 
 const server = new ApolloServer({
-  typeDefs: importSchema('./graphql/schema.graphql'),
+  typeDefs: importSchema("./graphql/schema.graphql"),
   resolvers,
   context: {
     User,
@@ -24,7 +24,7 @@ mongoose
     useUnifiedTopology: true,
     useNewUrlParser: true
   })
-  .then(() => console.log('Connected to DB'))
+  .then(() => console.log("Connected to DB"))
   .catch(e => console.log(e));
 
 const app = express();

@@ -3,7 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server-express");
 const { importSchema } = require("graphql-import");
-const resolvers = require("./graphql/resolvers");
+const resolvers = require("./graphql");
+const jwt = require("jsonwebtoken");
 
 // models
 const User = require("./models/User");
@@ -12,10 +13,11 @@ const Snap = require("./models/Snap");
 const server = new ApolloServer({
   typeDefs: importSchema("./graphql/schema.graphql"),
   resolvers,
-  context: {
+  context: ({ req }) => ({
     User,
-    Snap
-  }
+    Snap,
+    activeUser: req.activeUser
+  })
 });
 
 // DB Connection
@@ -28,6 +30,20 @@ mongoose
   .catch(e => console.log(e));
 
 const app = express();
+
+app.use(async (req, res, next) => {
+  const token = req.headers["authorization"];
+  if (token && token !== "null") {
+    try {
+      const activeUser = await jwt.verify(token, process.env.SECRET_KEY);
+      req.activeUser = activeUser;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  next();
+});
+
 server.applyMiddleware({
   app
 });
@@ -36,6 +52,8 @@ app.listen(
     port: 4001
   },
   () => {
-    console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
+    console.log(
+      `✨ Server ready at http://localhost:4001${server.graphqlPath}`
+    );
   }
 );

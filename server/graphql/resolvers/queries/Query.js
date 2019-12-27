@@ -5,8 +5,15 @@ const Query = {
 
   users: async (parent, args, { User }) => {
     return await User.find({}).sort({
-      createdAt: 'desc'
+      createdAt: "desc"
     });
+  },
+
+  activeUser: async (parent, args, { activeUser, User }) => {
+    if (!activeUser) {
+      return null;
+    }
+    return await User.findOne({ username: activeUser.username });
   },
 
   snap: async (parent, args, { Snap }) => {
@@ -15,7 +22,7 @@ const Query = {
 
   snaps: async (parent, args, { Snap }) => {
     return await Snap.find({}).sort({
-      createdAt: 'desc'
+      createdAt: "desc"
     });
   }
 };

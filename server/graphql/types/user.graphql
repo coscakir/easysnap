@@ -5,7 +5,7 @@ type Query {
 
 type User {
   id: ID!
-  userName: String!
+  username: String!
   createdAt: String!
   snaps: [Snap!]!
 }
@@ -16,11 +16,11 @@ type Mutation {
 }
 
 input CreateUserInput {
-  userName: String!
+  username: String!
   password: String!
 }
 
 input SigninUserInput {
-  userName: String!
+  username: String!
   password: String!
 }

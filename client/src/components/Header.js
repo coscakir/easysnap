@@ -4,12 +4,12 @@ import { NavLink } from "react-router-dom";
 class Header extends Component {
   render() {
     return (
-      <div class="header">
-        <div class="logo">
-          <h2 class="logo__title">easysnap</h2>
+      <div className="header">
+        <div className="logo">
+          <h2 className="logo__title">snaps</h2>
         </div>
 
-        <div class="header_menu">
+        <div className="header_menu">
           <NavLink to="/" exact>
             snaps
           </NavLink>

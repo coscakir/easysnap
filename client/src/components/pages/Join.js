@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
+import { withRouter } from "react-router-dom";
 import { CREATE_USER } from "../../queries";
 import Error from "../Error";
 
@@ -22,9 +23,12 @@ class Join extends Component {
 
   onSubmit = (e, createUser) => {
     e.preventDefault();
-    createUser().then(data => {
+    createUser().then(async ({ data }) => {
       console.log(data);
+      localStorage.setItem("token", data.createUser.token);
+      await this.props.refetch();
       this.resetState();
+      this.props.history.push("/");
     });
   };
 
@@ -93,4 +97,4 @@ class Join extends Component {
   }
 }
 
-export default Join;
+export default withRouter(Join);

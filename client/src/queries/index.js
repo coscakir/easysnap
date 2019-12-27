@@ -17,3 +17,16 @@ export const SIGNIN_USER = gql`
     }
   }
 `;
+
+export const GET_ACTIVE_USER = gql`
+  query {
+    activeUser {
+      username
+      createdAt
+      snaps {
+        text
+        createdAt
+      }
+    }
+  }
+`;

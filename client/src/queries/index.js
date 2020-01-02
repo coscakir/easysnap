@@ -30,3 +30,17 @@ export const GET_ACTIVE_USER = gql`
     }
   }
 `;
+
+export const GET_SNAPS = gql`
+  query {
+    snaps {
+      id
+      text
+      createdAt
+      user {
+        id
+        username
+      }
+    }
+  }
+`;

@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+import { Query } from "react-apollo";
+import { GET_SNAPS } from "../../queries";
+import TimeAgo from "react-timeago";
 
 class Home extends Component {
   render() {
+    const { session } = this.props;
     return (
       <div>
         <div className="description">
@@ -15,37 +19,45 @@ class Home extends Component {
             <input
               className="add-snap__input"
               type="text"
-              placeholder="add snap"
+              placeholder={
+                session && session.activeUser
+                  ? "add snap"
+                  : "Please login to add snap"
+              }
+              disabled={!(session && session.activeUser)}
             />
           </form>
         </div>
         <div>
-          <ul className="snaps">
-            <li>
-              <div className="title">Lorem ipsum dolor sit amet</div>
-              <div className="date">
-                <span>now</span>
-              </div>
-            </li>
-            <li>
-              <div className="title">
-                Curabitur gravida arcu ac tortor dignissim.
-              </div>
-              <div className="date">
-                <span>5 minutes ago</span>
-              </div>
-            </li>
-            <li>
-              <div className="title">
-                Tristique risus nec feugiat in fermentum.
-              </div>
-              <div className="date">
-                <span>7 minutes ago</span>
-              </div>
-            </li>
-          </ul>
+          <Query query={GET_SNAPS}>
+            {({ data, loading, error }) => {
+              if (loading)
+                return <div className="loading">Loading snaps...</div>;
+              if (error) return <div>Loading snaps...</div>;
+              return (
+                <div>
+                  <ul className="snaps">
+                    {data.snaps.map(snap => (
+                      <li key={snap.id}>
+                        <div className="title">{snap.text}</div>
+                        <div className="date">
+                          <span className="username">
+                            @{snap.user.username}
+                          </span>
+                          <br />
+                          <span>
+                            <TimeAgo date={snap.createdAt} />
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="counter">{data.snaps.length} snap(s)</div>
+                </div>
+              );
+            }}
+          </Query>
         </div>
-        <div className="counter">3 snap(s)</div>
       </div>
     );
   }

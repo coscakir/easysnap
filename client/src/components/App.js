@@ -17,10 +17,11 @@ const Root = ({ refetch, session }) => (
     <Fragment>
       <Header session={session} />
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact render={() => <Home session={session} />} />
         <Route path="/login" render={() => <Login refetch={refetch} />} />
         <Route path="/join" render={() => <Join refetch={refetch} />} />
-        <Route path="/profile" component={Profile} />} />
+        <Route path="/profile" render={() => <Profile session={session} />} />}
+        />
         <Redirect to="/" />
       </Switch>
     </Fragment>
